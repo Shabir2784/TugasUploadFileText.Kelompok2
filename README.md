@@ -1,58 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EventRent — Sistem Informasi Penyewaan Perlengkapan Acara
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web penyewaan perlengkapan acara berbasis **Laravel 11** dan **MySQL** (Proyek Perangkat Lunak — Kelompok 2).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Panduan Instalasi Awal (Setelah Clone)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Clone repositori ke komputer lokal:**
+   ```bash
+   git clone https://github.com/Shabir2784/TugasUploadFileText.Kelompok2
+   cd TugasUploadFileText.Kelompok2
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Install dependensi PHP & Frontend:**
+   ```bash
+   composer install
+   npm install && npm run build
+   ```
 
-## Learning Laravel
+3. **Konfigurasi Environment & Database:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Buka file `.env`, lalu sesuaikan nama database (`DB_DATABASE=eventrent`), username, dan password MySQL lokal Anda.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **Jalankan Migrasi, Seeder & Storage Link:**
+   ```bash
+   php artisan migrate --seed
+   php artisan storage:link
+   ```
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. **Jalankan Server Lokal:**
+   ```bash
+   php artisan serve
+   ```
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🤝 Panduan Kerja Sama Tim Menggunakan Git & GitHub
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Aturan Dasar Kelompok
+- **DILARANG `git push` langsung ke branch `main`.** Branch `main` hanya untuk kode yang sudah selesai dan teruji.
+- Selalu kerjakan tugas di **branch masing-masing** sesuai fitur/modul di SDD.
+- Selalu lakukan `git pull` sebelum mulai ngoding agar kode tetap sinkron dengan anggota lain.
 
+---
+
+### Alur Kerja Harian (Step-by-Step)
+
+#### 1. Ambil Update Terbaru dari `main`
+Sebelum membuat fitur baru, pastikan branch `main` di laptop Anda paling baru:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git checkout main
+git pull origin main
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+#### 2. Buat Branch Baru Sesuai Fitur
+Gunakan format penamaan `fitur/<nama-fitur>` atau `fix/<nama-perbaikan>`:
+```bash
+git checkout -b fitur/katalog-produk
+```
 
-## Contributing
+#### 3. Cek Perubahan & Simpan ke Commit
+Setelah selesai ngoding satu bagian fitur, cek file apa saja yang berubah:
+```bash
+git status
+```
+Tambahkan file dan buat pesan commit yang jelas (gunakan awalan `feat:`, `fix:`, `style:`, atau `docs:`):
+```bash
+git add .
+git commit -m "feat: menambahkan filter kategori pada halaman katalog"
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### 4. Push Branch ke GitHub
+Kirim branch Anda ke repositori GitHub:
+```bash
+git push -u origin fitur/katalog-produk
+```
+*(Untuk push berikutnya di branch yang sama, cukup ketik `git push`)*
 
-## Code of Conduct
+#### 5. Buat Pull Request (PR)
+1. Buka halaman repositori di **GitHub**.
+2. Klik tombol hijau **Compare & pull request** yang muncul di bagian atas.
+3. Pastikan arah merge adalah **`base: main` ← `compare: fitur/nama-fitur`**.
+4. Isi deskripsi singkat apa yang dikerjakan, lalu klik **Create pull request**.
+5. Beri tahu Project Manager / anggota tim untuk melakukan review dan **Merge pull request**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🆘 Mengatasi Masalah Umum Git
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### A. Mengatasi Merge Conflict
+Jika saat Pull Request muncul peringatan *conflict*:
+```bash
+# 1. Pastikan berada di branch fitur Anda
+git checkout fitur/nama-fitur
 
-## License
+# 2. Tarik perubahan terbaru dari main ke branch Anda
+git pull origin main
+```
+Buka file yang ditandai merah di VS Code, pilih kode yang benar (*Accept Current* / *Accept Incoming* / *Accept Both*), lalu simpan:
+```bash
+git add .
+git commit -m "fix: menyelesaikan merge conflict dengan main"
+git push
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### B. Pindah Branch Saat Kerja Belum Selesai (`git stash`)
+Jika Anda harus pindah branch mendadak tetapi kode saat ini belum siap di-commit:
+```bash
+git stash          # Menyimpan sementara perubahan yang belum di-commit
+git checkout main  # Pindah branch dengan aman
+```
+Untuk memunculkan kembali pekerjaan yang disimpan tadi:
+```bash
+git checkout fitur/nama-fitur
+git stash pop
+```
+
+### C. Perintah Pengecekan Cepat
+- `git branch` — Melihat daftar branch lokal dan posisi branch aktif saat ini.
+- `git log --oneline -n 5` — Melihat 5 riwayat commit terakhir secara ringkas.
+
+### ⚡ Shortcut Pindah & Buat Branch (`git switch`)
+
+- **Buat branch baru sekaligus langsung pindah ke dalamnya:**
+  ```bash
+  git switch -c fitur/nama-fitur
+  ```
+  *(Menggantikan `git checkout -b fitur/nama-fitur`)*
+
+- **Pindah ke branch yang sudah ada:**
+  ```bash
+  git switch main
+  ```
+
+- **Bolak-balik cepat ke branch sebelumnya (Toggle):**
+  ```bash
+  git switch -
+  ```
+  *(Sangat berguna saat Anda sering berpindah antara `main` dan branch fitur tanpa mengetik ulang nama branchnya)*

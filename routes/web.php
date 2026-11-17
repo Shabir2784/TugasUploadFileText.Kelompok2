@@ -3,6 +3,9 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
+// Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
+Route::get('/', [CatalogController::class, 'index'])->name('home');
+
 // Untuk pengguna yang belum login
 Route::middleware('guest')->group(function () {
     // Rute Registrasi
@@ -22,7 +25,6 @@ Route::middleware('guest')->group(function () {
 
 // Untuk pengguna yang sudah login
 Route::middleware('auth')->group(function () {
-
     // Halaman Dashboard Admin
     Route::get('/admin/dashboard', function () {
         return 'Selamat datang di Dashboard Admin EventRent';

@@ -26,13 +26,22 @@ Route::middleware('guest')->group(function () {
 
 // Untuk pengguna yang sudah login
 Route::middleware('auth')->group(function () {
-    // Halaman Dashboard Admin
-    Route::get('/admin/dashboard', function () {
-        return 'Selamat datang di Dashboard Admin EventRent';
-    })->name('admin.dashboard');
+    // // Halaman Dashboard Admin
+    // Route::get('/admin/dashboard', function () {
+    //     return 'Selamat datang di Dashboard Admin EventRent';
+    // })->name('admin.dashboard');
 
-    // Halaman Utama Pelanggan
-    Route::get('/beranda', function () {
-        return 'Selamat datang di Halaman Utama Pelanggan EventRent';
-    })->name('pelanggan.home');
+    // // Halaman Utama Pelanggan
+    // Route::get('/beranda', function () {
+    //     return 'Selamat datang di Halaman Utama Pelanggan EventRent';
+    // })->name('pelanggan.home');
+
+    /* 
+    Rute halaman utama yang tidak dibatasi peran, karena halaman terpisah
+    untuk dashboard admin/pengguna belum dibuat
+    */
+    Route::get('/', [CatalogController::class, 'index'])->name('home');
+
+    // Rute logout untuk pengguna yang sudah login
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

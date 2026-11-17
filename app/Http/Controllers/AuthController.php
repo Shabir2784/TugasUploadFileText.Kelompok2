@@ -22,22 +22,21 @@ class AuthController extends Controller
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'phone'    => 'nullable|string|max:20',
-            // File KTP wajib gambar (JPG/PNG), maksimal 2MB
             'ktp_path' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         // Simpan foto KTP di disk 'local' (storage/app/ktp) agar privat dan tidak bisa diakses publik
         $ktpPath = $request->file('ktp_path')->store('ktp', 'local');
 
-        // Buat akun baru dengan default role dan status[cite: 2]
+        // Buat akun baru dengan default role dan status
         $user = User::create([
-            'name'                => $request->name,
-            'email'               => $request->email,
-            'password'            => Hash::make($request->password), // Password di-hash[cite: 2]
-            'phone'               => $request->phone,
-            'ktp_path'            => $ktpPath,
-            'role'                => 'customer',
-            'verification_status' => 'pending',
+            'nama'              => $request->name,
+            'email'             => $request->email,
+            'kata_sandi'        => Hash::make($request->password), 
+            'nomor_telepon'     => $request->phone,
+            'berkas_ktp'        => $ktpPath,
+            'peran'             => 'pelanggan', 
+            'status_verifikasi' => 'menunggu', 
         ]);
 
         // Login otomatis (opsional) atau arahkan ke halaman pemberitahuan
@@ -74,8 +73,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 3. Tampilkan halaman utama sesuai peran (Role-based redirection)
-            $userRole = Auth::user()->role;
+            // 3. Tampilkan halaman utama sesuai peran
+            $userRole = Auth::user()->peran;
 
             if ($userRole === 'admin') {
                 return redirect()->intended(route('admin.dashboard'));

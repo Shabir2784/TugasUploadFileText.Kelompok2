@@ -81,7 +81,7 @@ class AuthController extends Controller
             }
 
             // Jika bukan admin, lempar ke halaman pelanggan
-            return redirect()->intended(route('pelanggan.home'));
+            return redirect()->intended(route('home'));
         }
 
         // 4. Pesan error jika kredensial tidak valid
@@ -97,6 +97,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Anda telah berhasil keluar.');
+        return redirect('/')->with('success', 'Anda telah berhasil keluar.');
     }
 }

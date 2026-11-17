@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Customer\HomeController;
 
 // Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
-Route::get('/', [CatalogController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
 
 // Untuk pengguna yang belum login
 Route::middleware('guest')->group(function () {
@@ -40,8 +42,8 @@ Route::middleware('auth')->group(function () {
     Rute halaman utama yang tidak dibatasi peran, karena halaman terpisah
     untuk dashboard admin/pengguna belum dibuat
     */
-    Route::get('/', [CatalogController::class, 'index'])->name('home');
+    // Route::get('/', [CatalogController::class, 'index'])->name('home');
 
     // Rute logout untuk pengguna yang sudah login
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -32,11 +32,11 @@ class AuthController extends Controller
         $user = User::create([
             'nama'              => $request->name,
             'email'             => $request->email,
-            'kata_sandi'        => Hash::make($request->password), 
+            'kata_sandi'        => Hash::make($request->password),
             'nomor_telepon'     => $request->phone,
             'berkas_ktp'        => $ktpPath,
-            'peran'             => 'pelanggan', 
-            'status_verifikasi' => 'menunggu', 
+            'peran'             => 'pelanggan',
+            'status_verifikasi' => 'menunggu',
         ]);
 
         // Login otomatis (opsional) atau arahkan ke halaman pemberitahuan
@@ -73,15 +73,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 3. Tampilkan halaman utama sesuai peran
-            $userRole = Auth::user()->peran;
-
-            if ($userRole === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
-            }
-
-            // Jika bukan admin, lempar ke halaman pelanggan
-            return redirect()->intended(route('pelanggan.home'));
+            return $request->user()->peran === 'admin'
+                ? redirect()->route('admin.dashboard')
+                : redirect()->intended(route('home'));
         }
 
         // 4. Pesan error jika kredensial tidak valid

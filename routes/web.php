@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\DashboardController;
 
 // Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
 Route::get('/', [CatalogController::class, 'index'])->name('home');
@@ -25,27 +24,24 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.update');
 });
 
-// Untuk pengguna yang sudah login (Pelanggan & Admin)
+// Untuk pengguna yang sudah login
 Route::middleware('auth')->group(function () {
-    // Halaman Utama Pelanggan
-    Route::get('/beranda', function () {
-        return 'Selamat datang di Halaman Utama Pelanggan EventRent';
-    })->name('pelanggan.home');
+    // // Halaman Dashboard Admin
+    // Route::get('/admin/dashboard', function () {
+    //     return 'Selamat datang di Dashboard Admin EventRent';
+    // })->name('admin.dashboard');
 
-    // Rute logout global (mendukung POST dari form Blade maupun GET)
-    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+    // // Halaman Utama Pelanggan
+    // Route::get('/beranda', function () {
+    //     return 'Selamat datang di Halaman Utama Pelanggan EventRent';
+    // })->name('pelanggan.home');
+
+    /* 
+    Rute halaman utama yang tidak dibatasi peran, karena halaman terpisah
+    untuk dashboard admin/pengguna belum dibuat
+    */
+    Route::get('/', [CatalogController::class, 'index'])->name('home');
+
+    // Rute logout untuk pengguna yang sudah login
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-
-// Khusus Panel Admin
-Route::middleware(['auth', 'role:admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-        // Rute placeholder agar link menu sidebar admin tidak error saat dirender
-        Route::view('/verifikasi-ktp', 'admin.dashboard')->name('ktp.index');
-        Route::view('/pemesanan', 'admin.dashboard')->name('pesanan.index');
-        Route::view('/barang', 'admin.dashboard')->name('barang.index');
-        Route::view('/laporan-kerusakan', 'admin.dashboard')->name('kerusakan.index');
-    });

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\Customer\CatalogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 // Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
+Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 // Untuk pengguna yang belum login
 Route::middleware('guest')->group(function () {

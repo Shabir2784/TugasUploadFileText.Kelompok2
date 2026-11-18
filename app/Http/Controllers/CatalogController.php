@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    public function index()
-    {
-        $produkPilihan = Barang::with('kategori')->latest()->take(4)->get();
+    // public function index()
+    // {
+    //     $produkPilihan = Barang::with('kategori')->latest()->take(4)->get();
 
-        return view('home', compact('produkPilihan'));
-    }
+    //     return view('customer.home', compact('produkPilihan'));
+    // }
+    // public function contact()
+    // {
+    //     return view('customer.contact');
+    // }
 }

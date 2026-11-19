@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\BarangController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
 Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/katalog/{item}', [CatalogController::class, 'show'])->name('catalog.show');
+Route::get('/katalog/{item}/cek-stok', [CatalogController::class, 'checkStock'])->name('catalog.check-stock');
 
 // Untuk pengguna yang belum login
 Route::middleware('guest')->group(function () {

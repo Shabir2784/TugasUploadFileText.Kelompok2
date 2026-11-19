@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori as Category;
 use App\Models\Barang as Item;
+use App\Services\AvailabilityService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -13,6 +15,10 @@ class CatalogController extends Controller
     /**
      * Menampilkan halaman katalog, pencarian kata kunci, & filter kategori (UC-05 & UC-06).
      */
+    public function __construct(
+        protected AvailabilityService $availabilityService
+    ) {}
+
     public function index(Request $request): View|string
     {
         $validated = $request->validate([
@@ -71,4 +77,56 @@ class CatalogController extends Controller
             'totalAllItems'
         ));
     }
+    /**
+     * Menampilkan halaman Detail Produk & Form Cek Stok (UC-05 & UC-07).
+     */
+    public function show(Item $item): View
+    {
+        $item->load('kategori');
+
+        $defaultStart = now()->addDay()->toDateString();
+        $defaultEnd = now()->addDay()->toDateString();
+
+        $initialCheck = $this->availabilityService->checkAvailability(
+            $item,
+            $defaultStart,
+            $defaultEnd,
+            1
+        );
+
+        return view('customer.catalog.show', compact(
+            'item',
+            'defaultStart',
+            'defaultEnd',
+            'initialCheck'
+        ));
+    }
+
+    /**
+     * Endpoint AJAX real-time untuk mengecek sisa stok saat tanggal/jumlah diubah (UC-07).
+     */
+    public function checkStock(Request $request, Item $item): JsonResponse
+    {
+        $validated = $request->validate([
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date'   => ['required', 'date', 'after_or_equal:start_date'],
+            'quantity'   => ['nullable', 'integer', 'min:1'],
+        ]);
+
+        $result = $this->availabilityService->checkAvailability(
+            $item,
+            $validated['start_date'],
+            $validated['end_date'],
+            (int) ($validated['quantity'] ?? 1)
+        );
+
+        return response()->json([
+            'status'               => $result['status'],
+            'available_stock'      => $result['available_stock'],
+            'total_days'           => $result['total_days'],
+            'estimated_total'      => $result['estimated_total'],
+            'estimated_total_text' => 'Rp ' . number_format($result['estimated_total'], 0, ',', '.'),
+        ]);
+    }
 }
+

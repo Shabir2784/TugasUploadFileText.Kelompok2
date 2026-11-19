@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Customer\PesananController;
 
 // Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -13,6 +14,13 @@ Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
 Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/katalog/{item}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/katalog/{item}/cek-stok', [CatalogController::class, 'checkStock'])->name('catalog.check-stock');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/pesanan/{pemesanan}', [PesananController::class, 'show'])->name('pesanan.show');
+    Route::post('/pesanan/{pemesanan}/kondisi-baik', [PesananController::class, 'kondisiBaik'])->name('pesanan.kondisi-baik');
+    Route::get('/pesanan/{pemesanan}/laporan-kerusakan', [PesananController::class, 'createKerusakan'])->name('pesanan.laporan-kerusakan.create');
+    Route::post('/pesanan/{pemesanan}/laporan-kerusakan', [PesananController::class, 'storeKerusakan'])->name('pesanan.laporan-kerusakan');
+});
 
 // Untuk pengguna yang belum login
 Route::middleware('guest')->group(function () {

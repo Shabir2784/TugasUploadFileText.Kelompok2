@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BarangController;
 use App\Http\Controllers\Customer\PesananController;
+use App\Http\Controllers\Admin\PemesananController;
 
 // Rute Halaman Utama (Katalog) bisa diakses siapa saja, termasuk pengguna yang belum login
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -59,7 +60,7 @@ Route::middleware(['auth', 'role:admin'])
 
         // Rute placeholder agar link menu sidebar admin tidak error saat dirender
         Route::view('/verifikasi-ktp', 'admin.dashboard')->name('ktp.index');
-        Route::view('/pemesanan', 'admin.dashboard')->name('pesanan.index');
+        Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pesanan.index');
         //Route::view('/barang', 'admin.dashboard')->name('barang.index');
         Route::resource('barang', BarangController::class)->except(['show']);
         Route::view('/laporan-kerusakan', 'admin.dashboard')->name('kerusakan.index');
